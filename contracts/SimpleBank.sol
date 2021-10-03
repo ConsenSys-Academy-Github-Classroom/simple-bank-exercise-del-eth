@@ -101,5 +101,13 @@ contract SimpleBank {
         // 2. Transfer Eth to the sender and decrement the withdrawal amount from
         //    sender's balance
         // 3. Emit the appropriate event for this message
+        require(
+            withdrawAmount <= balances[msg.sender],
+            "Cannot withdraw more than balance"
+        );
+        balances[msg.sender] -= withdrawAmount;
+        address(msg.sender).transfer(withdrawAmount);
+        emit LogWithdrawal(msg.sender, withdrawAmount, balances[msg.sender]);
+        return balances[msg.sender];
     }
 }
